@@ -1,6 +1,6 @@
 # Survey Application
 
-This is a time tracker application built using HTML, CSS, and JavaScript for the frontend, Node.js for the backend, and PostgreSQL as the database. The application allows users to register, log in, and participate in surveys created by an admin.
+This is a time tracker application built using HTML, CSS, and JavaScript for the frontend, Node.js for the backend, and PostgreSQL as the database. The application allows users to register, log in, and track their work hours, while the admin can monitor and view user timings.
 
 ## Features
 
@@ -25,8 +25,8 @@ This is a time tracker application built using HTML, CSS, and JavaScript for the
 1. **Clone the repository:**
 
     ```bash
-    git clone https://github.com/DeepDhameliya/survey-application.git
-    cd survey-application
+    https://github.com/DeepDhameliya/Time-Tracker.git
+    cd Time-Tracker
     ```
 
 2. **Install dependencies:**
@@ -74,11 +74,10 @@ This is a time tracker application built using HTML, CSS, and JavaScript for the
       ```sql
       -- Users Table
       CREATE TABLE users (
-          userid SERIAL PRIMARY KEY,
-          fname VARCHAR(255) NOT NULL,
-          mname VARCHAR(255),
-          lname VARCHAR(255),
-          mobilenumber VARCHAR(15),
+          user_id SERIAL PRIMARY KEY,
+          first_name VARCHAR(255) NOT NULL,
+          last_name VARCHAR(255),
+          mobile_number VARCHAR(15),
           email VARCHAR(255) UNIQUE NOT NULL,
           password VARCHAR(255) NOT NULL,
           token_no VARCHAR(255),
@@ -86,39 +85,19 @@ This is a time tracker application built using HTML, CSS, and JavaScript for the
       );
 
       -- Survey Questions Table
-      CREATE TABLE survey_questions (
-          id SERIAL PRIMARY KEY,
-          question TEXT NOT NULL,
-          options TEXT NOT NULL,  -- Store options as a comma-separated string
-          type VARCHAR(50) NOT NULL
-      );
-
-      -- Survey Responses Table
-      CREATE TABLE survey_responses (
-          response_id SERIAL PRIMARY KEY,
-          user_id INT NOT NULL,
-          question_id INT NOT NULL,
-          response TEXT NOT NULL,
-          UNIQUE (user_id, question_id),  -- Ensure that each user can only respond to each question once
-          FOREIGN KEY (user_id) REFERENCES users(userid) ON DELETE CASCADE,
-          FOREIGN KEY (question_id) REFERENCES survey_questions(id) ON DELETE CASCADE
-      );
-
-      -- Feedback Table
-      CREATE TABLE feedback (
-          feedback_id SERIAL PRIMARY KEY,
-          userid INT NOT NULL UNIQUE,  -- Ensure that each user can have only one feedback entry
-          surveyResponse TEXT,
-          suggestion TEXT,
-          email VARCHAR(255),
-          FOREIGN KEY (userid) REFERENCES users(userid) ON DELETE CASCADE
+      CREATE TABLE timing (
+          timing_id SERIAL PRIMARY KEY,
+          user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
+          currenttime VARCHAR(255) NOT NULL,
+          breaktime VARCHAR(255) NOT NULL,
+          date DATE NOT NULL
       );
       ```
 
 6. **Start the application:**
 
     ```bash
-    nodemon index.js
+    nodemon main.js
     ```
 
 7. **Access the application:**
